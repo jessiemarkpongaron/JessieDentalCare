@@ -254,10 +254,15 @@
         <label for="fName">Full name</label>
         <input type="text" id="fName" maxlength="120" required autocomplete="name">
 
-        <label for="fContact">Email or mobile number</label>
-        <input type="text" id="fContact" maxlength="120" required autocomplete="email"
-               placeholder="you@email.com or 0917 123 4567">
-        <p class="hint">Use an email address to receive a booking confirmation email.</p>
+        <label for="fMobile">Mobile number</label>
+        <input type="tel" id="fMobile" maxlength="30" required autocomplete="tel"
+               placeholder="0917 123 4567" pattern="[+0-9][0-9\s\-]{6,19}">
+        <p class="hint">Required — so the clinic can call you about your appointment.</p>
+
+        <label for="fEmail">Email address <span style="font-weight:normal">(optional)</span></label>
+        <input type="email" id="fEmail" maxlength="120" autocomplete="email"
+               placeholder="you@email.com">
+        <p class="hint">Add an email to receive a booking confirmation email.</p>
 
         <label for="fService">Service</label>
         <select id="fService" required>
@@ -291,6 +296,13 @@
     <p>We look forward to seeing you.</p>
     <div class="detail" id="successDetail"></div>
     <p class="hint" id="successEmailNote"></p>
+    <div class="detail" style="margin-top:12px">
+      <strong>JessieDentalCare</strong><br>
+      📍 Smiley Street, Manila, Philippines<br>
+      📞 <a href="tel:+639171347458">0917 134 7458</a><br>
+      ✉️ <a href="mailto:jessiemarkpongaron@gmail.com">jessiemarkpongaron@gmail.com</a><br>
+      💬 <a href="https://www.facebook.com/jessiedentalcare" target="_blank" rel="noopener">facebook.com/jessiedentalcare</a>
+    </div>
     <button class="submit-btn" style="max-width:280px" onclick="location.reload()">Book Another Appointment</button>
   </div>
 </main>
@@ -446,7 +458,8 @@
     }
     var payload = {
       name: $('fName').value.trim(),
-      contact: $('fContact').value.trim(),
+      email: $('fEmail').value.trim(),
+      mobile: $('fMobile').value.trim(),
       service: $('fService').value,
       date: selectedDate,
       time: selectedTime
@@ -524,11 +537,12 @@
       '<strong>Service:</strong> ' + escapeHtml($('fService').value) + '<br>' +
       '<strong>Date:</strong> ' + friendlyDate(selectedDate) + '<br>' +
       '<strong>Time:</strong> ' + selectedTime + ' (Asia/Manila)<br>' +
-      '<strong>Name:</strong> ' + escapeHtml($('fName').value.trim());
-    var isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('fContact').value.trim());
-    $('successEmailNote').textContent = isEmail
-      ? 'A confirmation email is on its way to ' + $('fContact').value.trim() + '.'
-      : 'Please save your Booking ID — no email confirmation was sent since a mobile number was provided.';
+      '<strong>Name:</strong> ' + escapeHtml($('fName').value.trim()) + '<br>' +
+      '<strong>Mobile:</strong> ' + escapeHtml($('fMobile').value.trim());
+    var email = $('fEmail').value.trim();
+    $('successEmailNote').textContent = email
+      ? 'A confirmation email is on its way to ' + email + '.'
+      : 'Please save your Booking ID — no email was provided, so no confirmation email was sent.';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
