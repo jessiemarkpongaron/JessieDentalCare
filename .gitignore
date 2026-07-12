@@ -1,0 +1,9 @@
+# Credentials & secrets — never commit
+.mcp.json
+.env
+.env.*
+*.key
+
+# Local tooling
+node_modules/
+.claude/settings.local.json
