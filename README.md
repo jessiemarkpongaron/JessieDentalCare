@@ -8,7 +8,7 @@ A zero-cost, two-channel dental appointment booking system (web + Facebook Messe
 
 ## Booking page
 
-The static booking page lives in [`webpage/index.html`](webpage/index.html) — a single self-contained HTML file (no frameworks, no build step). It consumes the live n8n endpoints:
+The static booking page lives in [`index.html`](index.html) — a single self-contained HTML file (no frameworks, no build step), served via GitHub Pages at **https://jessiemarkpongaron.github.io/JessieDentalCare/**. It consumes the live n8n endpoints:
 
 | Endpoint | Method | Purpose |
 |---|---|---|

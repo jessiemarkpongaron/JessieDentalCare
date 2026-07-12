@@ -1,12 +1,589 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=webpage/">
-  <title>JessieDentalCare — Book an Appointment</title>
-  <link rel="canonical" href="webpage/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book an Appointment — JessieDentalCare</title>
+<style>
+  :root {
+    --teal: #0e7c7b;
+    --teal-dark: #0a5c5b;
+    --teal-light: #e6f4f4;
+    --ink: #1f2d2d;
+    --muted: #6b7d7d;
+    --line: #d8e4e4;
+    --bg: #f5fafa;
+    --white: #ffffff;
+    --danger: #b3402e;
+    --ok: #2e7d32;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  header {
+    background: var(--teal);
+    color: var(--white);
+    padding: 20px 16px;
+    text-align: center;
+  }
+  header h1 { font-size: 1.4rem; font-weight: 600; }
+  header p { font-size: .9rem; opacity: .9; }
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .step-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--teal-dark);
+  }
+  /* Calendar */
+  .cal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .cal-head button {
+    border: 1px solid var(--line);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  .cal-head button:disabled { opacity: .35; cursor: default; }
+  .cal-head .month-label { font-weight: 600; }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .cal-grid .dow {
+    text-align: center;
+    font-size: .72rem;
+    color: var(--muted);
+    padding: 4px 0;
+    text-transform: uppercase;
+  }
+  .day {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--white);
+    font-size: .9rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  .day .cnt { font-size: .62rem; color: var(--teal); }
+  .day:hover:not(:disabled) { border-color: var(--teal); }
+  .day:disabled {
+    background: #eef1f1;
+    color: #b0bcbc;
+    cursor: default;
+  }
+  .day.selected {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--white);
+  }
+  .day.selected .cnt { color: var(--teal-light); }
+  .day.blank { visibility: hidden; }
+  /* Slots */
+  .slot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 8px;
+  }
+  .slot {
+    border: 1px solid var(--line);
+    background: var(--white);
+    border-radius: 8px;
+    padding: 10px 4px;
+    font-size: .9rem;
+    cursor: pointer;
+    text-align: center;
+  }
+  .slot:hover { border-color: var(--teal); }
+  .slot.selected {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--white);
+  }
+  .hint { color: var(--muted); font-size: .85rem; }
+  /* Form */
+  label { display: block; font-size: .85rem; font-weight: 600; margin: 12px 0 4px; }
+  input[type="text"], select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: .95rem;
+    background: var(--white);
+  }
+  input:focus, select:focus { outline: 2px solid var(--teal); border-color: var(--teal); }
+  .consent {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: var(--teal-light);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    font-size: .82rem;
+    color: var(--ink);
+  }
+  .consent input { margin-top: 3px; }
+  .submit-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 14px;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .submit-btn:hover:not(:disabled) { background: var(--teal-dark); }
+  .submit-btn:disabled { opacity: .5; cursor: default; }
+  /* Messages */
+  .msg { border-radius: 10px; padding: 14px; margin-top: 14px; font-size: .92rem; display: none; }
+  .msg.error { display: block; background: #fbeae7; color: var(--danger); }
+  .msg.info  { display: block; background: var(--teal-light); color: var(--teal-dark); }
+  .alt-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .alt-list button {
+    border: 1px solid var(--teal);
+    background: var(--white);
+    color: var(--teal-dark);
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: .85rem;
+  }
+  .alt-list button:hover { background: var(--teal-light); }
+  /* Success panel */
+  #successCard { display: none; text-align: center; }
+  #successCard .check {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--ok);
+    color: var(--white);
+    font-size: 2rem;
+    line-height: 64px;
+    margin: 0 auto 12px;
+  }
+  #successCard h2 { color: var(--ok); font-size: 1.2rem; margin-bottom: 8px; }
+  #successCard .detail {
+    background: var(--bg);
+    border: 1px dashed var(--line);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 12px auto;
+    max-width: 380px;
+    text-align: left;
+    font-size: .92rem;
+  }
+  .spinner {
+    display: none;
+    margin: 8px auto;
+    width: 22px; height: 22px;
+    border: 3px solid var(--line);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  footer { text-align: center; font-size: .78rem; color: var(--muted); padding: 20px 12px 32px; }
+</style>
 </head>
 <body>
-  <p>Redirecting to the <a href="webpage/">booking page</a>…</p>
+
+<header>
+  <h1>🦷 JessieDentalCare</h1>
+  <p>Book your appointment online — open daily 9:00 AM to 6:00 PM (Philippine time)</p>
+</header>
+
+<main>
+  <div id="bookingFlow">
+    <!-- Step 1: pick a date -->
+    <div class="card">
+      <div class="step-title">1 · Choose a date</div>
+      <div class="cal-head">
+        <button id="prevMonth" aria-label="Previous month">‹</button>
+        <span class="month-label" id="monthLabel"></span>
+        <button id="nextMonth" aria-label="Next month">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="spinner" id="calSpinner"></div>
+      <p class="hint" style="margin-top:8px">Greyed-out days are fully booked or outside the 14-day booking window. Same-day slots need at least 2 hours notice.</p>
+    </div>
+
+    <!-- Step 2: pick a time -->
+    <div class="card" id="slotCard" style="display:none">
+      <div class="step-title">2 · Choose a time — <span id="slotDateLabel"></span></div>
+      <div class="slot-grid" id="slotGrid"></div>
+      <div class="spinner" id="slotSpinner"></div>
+      <p class="hint" id="slotHint" style="margin-top:8px"></p>
+    </div>
+
+    <!-- Step 3: details -->
+    <div class="card" id="formCard" style="display:none">
+      <div class="step-title">3 · Your details</div>
+      <form id="bookingForm">
+        <label for="fName">Full name</label>
+        <input type="text" id="fName" maxlength="120" required autocomplete="name">
+
+        <label for="fContact">Email or mobile number</label>
+        <input type="text" id="fContact" maxlength="120" required autocomplete="email"
+               placeholder="you@email.com or 0917 123 4567">
+        <p class="hint">Use an email address to receive a booking confirmation email.</p>
+
+        <label for="fService">Service</label>
+        <select id="fService" required>
+          <option value="" disabled selected>Select a service…</option>
+          <option>Consultation / Check-up</option>
+          <option>Oral Prophylaxis (Cleaning)</option>
+          <option>Tooth Extraction</option>
+          <option>Dental Filling (Pasta)</option>
+          <option>Teeth Whitening</option>
+          <option>Dentures / Prosthodontics</option>
+          <option>Braces Consultation / Adjustment</option>
+          <option>Other (specify at the clinic)</option>
+        </select>
+
+        <div class="consent">
+          <input type="checkbox" id="fConsent" required>
+          <span><strong>Data Privacy Consent (RA 10173):</strong> I agree that JessieDentalCare will collect my name, contact details, chosen service, and schedule solely to manage this appointment. Data is stored securely and never shared with third parties.</span>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Confirm Booking</button>
+        <div class="spinner" id="submitSpinner"></div>
+      </form>
+      <div class="msg" id="formMsg"></div>
+    </div>
+  </div>
+
+  <!-- Success -->
+  <div class="card" id="successCard">
+    <div class="check">✓</div>
+    <h2>Appointment Confirmed!</h2>
+    <p>We look forward to seeing you.</p>
+    <div class="detail" id="successDetail"></div>
+    <p class="hint" id="successEmailNote"></p>
+    <button class="submit-btn" style="max-width:280px" onclick="location.reload()">Book Another Appointment</button>
+  </div>
+</main>
+
+<footer>
+  JessieDentalCare · Open daily 9:00 AM – 6:00 PM (Asia/Manila) ·
+  Message us: <a href="https://m.me/jessiedentalcare">m.me/jessiedentalcare</a><br>
+  Your data is processed in accordance with the Philippine Data Privacy Act of 2012 (RA 10173).
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var API_BASE = 'https://n8n.jessiepongaron.cloud/webhook';
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOWS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+  // Today in Asia/Manila regardless of the visitor's timezone
+  function manilaToday() {
+    var parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Manila', year: 'numeric', month: '2-digit', day: '2-digit' })
+      .format(new Date());                 // "YYYY-MM-DD"
+    var p = parts.split('-');
+    return { y: +p[0], m: +p[1], d: +p[2] };
+  }
+
+  var today = manilaToday();
+  var view = { y: today.y, m: today.m };   // month being displayed (1-based month)
+  var maxView = (function () {             // don't navigate past the month containing today+14
+    var dt = new Date(Date.UTC(today.y, today.m - 1, today.d + 14));
+    return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1 };
+  })();
+
+  var selectedDate = null;   // "YYYY-MM-DD"
+  var selectedTime = null;   // "9:00 AM"
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function monthKey(v) { return v.y + '-' + pad(v.m); }
+  function cmpMonth(a, b) { return (a.y * 12 + a.m) - (b.y * 12 + b.m); }
+
+  // ---------- Calendar ----------
+  function loadMonth() {
+    $('monthLabel').textContent = MONTHS[view.m - 1] + ' ' + view.y;
+    $('prevMonth').disabled = cmpMonth(view, { y: today.y, m: today.m }) <= 0;
+    $('nextMonth').disabled = cmpMonth(view, maxView) >= 0;
+    $('calGrid').innerHTML = '';
+    $('calSpinner').style.display = 'block';
+
+    fetch(API_BASE + '/month-availability?month=' + monthKey(view))
+      .then(function (r) { return r.json(); })
+      .then(function (data) { renderCalendar(data.days || {}); })
+      .catch(function () {
+        $('calGrid').innerHTML = '<p class="hint" style="grid-column:1/-1">Could not load availability. Please refresh the page.</p>';
+      })
+      .finally(function () { $('calSpinner').style.display = 'none'; });
+  }
+
+  function renderCalendar(days) {
+    var grid = $('calGrid');
+    grid.innerHTML = '';
+    DOWS.forEach(function (d) {
+      var el = document.createElement('div');
+      el.className = 'dow';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    var firstDow = new Date(Date.UTC(view.y, view.m - 1, 1)).getUTCDay();
+    var daysInMonth = new Date(Date.UTC(view.y, view.m, 0)).getUTCDate();
+
+    for (var i = 0; i < firstDow; i++) {
+      var blank = document.createElement('button');
+      blank.className = 'day blank';
+      blank.disabled = true;
+      grid.appendChild(blank);
+    }
+    for (var d = 1; d <= daysInMonth; d++) {
+      (function (d) {
+        var key = view.y + '-' + pad(view.m) + '-' + pad(d);
+        var count = days[key] || 0;
+        var btn = document.createElement('button');
+        btn.className = 'day' + (key === selectedDate ? ' selected' : '');
+        btn.innerHTML = '<span>' + d + '</span>' + (count > 0 ? '<span class="cnt">' + count + ' slot' + (count > 1 ? 's' : '') + '</span>' : '');
+        btn.disabled = count === 0;
+        btn.addEventListener('click', function () { selectDate(key, btn); });
+        grid.appendChild(btn);
+      })(d);
+    }
+  }
+
+  function selectDate(key, btn) {
+    selectedDate = key;
+    selectedTime = null;
+    document.querySelectorAll('.day.selected').forEach(function (el) { el.classList.remove('selected'); });
+    btn.classList.add('selected');
+    $('formCard').style.display = 'none';
+    $('slotCard').style.display = 'block';
+    $('slotDateLabel').textContent = friendlyDate(key);
+    loadSlots(key);
+    $('slotCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function friendlyDate(key) {
+    var p = key.split('-');
+    return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0];
+  }
+
+  // ---------- Slots ----------
+  function loadSlots(dateKey) {
+    $('slotGrid').innerHTML = '';
+    $('slotHint').textContent = '';
+    $('slotSpinner').style.display = 'block';
+
+    fetch(API_BASE + '/available-slots?date=' + dateKey)
+      .then(function (r) { return r.json(); })
+      .then(function (data) { renderSlots(data.free_slots || []); })
+      .catch(function () { $('slotHint').textContent = 'Could not load time slots. Please try again.'; })
+      .finally(function () { $('slotSpinner').style.display = 'none'; });
+  }
+
+  function renderSlots(slots) {
+    var grid = $('slotGrid');
+    grid.innerHTML = '';
+    if (!slots.length) {
+      $('slotHint').textContent = 'No more slots available on this day — please pick another date.';
+      return;
+    }
+    $('slotHint').textContent = 'All times are Philippine time (Asia/Manila). Appointments last 1 hour.';
+    slots.forEach(function (t) {
+      var btn = document.createElement('button');
+      btn.className = 'slot' + (t === selectedTime ? ' selected' : '');
+      btn.textContent = t;
+      btn.addEventListener('click', function () {
+        selectedTime = t;
+        document.querySelectorAll('.slot.selected').forEach(function (el) { el.classList.remove('selected'); });
+        btn.classList.add('selected');
+        $('formCard').style.display = 'block';
+        $('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  // ---------- Booking ----------
+  $('bookingForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    hideMsg();
+    if (!selectedDate || !selectedTime) {
+      showError('Please choose a date and time first.');
+      return;
+    }
+    var payload = {
+      name: $('fName').value.trim(),
+      contact: $('fContact').value.trim(),
+      service: $('fService').value,
+      date: selectedDate,
+      time: selectedTime
+    };
+    setBusy(true);
+    fetch(API_BASE + '/dental-booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json(); })
+      .then(handleBookingResult)
+      .catch(function () { showError('Something went wrong while booking. Please try again.'); })
+      .finally(function () { setBusy(false); });
+  });
+
+  function handleBookingResult(res) {
+    switch (res.status) {
+      case 'available':
+        showSuccess(res);
+        break;
+      case 'time_taken':
+        showAlternatives(
+          'Sorry — ' + selectedTime + ' on ' + friendlyDate(res.requested_date) + ' was just taken. Pick another time:',
+          (res.same_day_alternatives || []).map(function (t) {
+            return { label: t, onPick: function () { pickAltTime(t); } };
+          })
+        );
+        loadSlots(selectedDate); // refresh the slot list too
+        break;
+      case 'day_full':
+        showAlternatives(
+          'Sorry — ' + friendlyDate(res.requested_date) + ' is fully booked. Nearest days with openings:',
+          (res.alternative_days || []).map(function (d) {
+            return {
+              label: friendlyDate(d.date) + ' (' + d.slots_left + ' slots)',
+              onPick: function () { pickAltDate(d.date); }
+            };
+          })
+        );
+        break;
+      default:
+        showError(res.message || 'Your request could not be processed. Please check your details.');
+    }
+  }
+
+  function pickAltTime(t) {
+    selectedTime = t;
+    hideMsg();
+    document.querySelectorAll('.slot').forEach(function (el) {
+      el.classList.toggle('selected', el.textContent === t);
+    });
+    $('bookingForm').dispatchEvent(new Event('submit'));
+  }
+
+  function pickAltDate(dateKey) {
+    hideMsg();
+    var p = dateKey.split('-');
+    view = { y: +p[0], m: +p[1] };
+    selectedDate = dateKey;
+    selectedTime = null;
+    $('formCard').style.display = 'none';
+    loadMonth();
+    $('slotCard').style.display = 'block';
+    $('slotDateLabel').textContent = friendlyDate(dateKey);
+    loadSlots(dateKey);
+    $('slotCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function showSuccess(res) {
+    $('bookingFlow').style.display = 'none';
+    $('successCard').style.display = 'block';
+    $('successDetail').innerHTML =
+      '<strong>Booking ID:</strong> ' + res.booking_id + '<br>' +
+      '<strong>Service:</strong> ' + escapeHtml($('fService').value) + '<br>' +
+      '<strong>Date:</strong> ' + friendlyDate(selectedDate) + '<br>' +
+      '<strong>Time:</strong> ' + selectedTime + ' (Asia/Manila)<br>' +
+      '<strong>Name:</strong> ' + escapeHtml($('fName').value.trim());
+    var isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test($('fContact').value.trim());
+    $('successEmailNote').textContent = isEmail
+      ? 'A confirmation email is on its way to ' + $('fContact').value.trim() + '.'
+      : 'Please save your Booking ID — no email confirmation was sent since a mobile number was provided.';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showAlternatives(text, options) {
+    var box = $('formMsg');
+    box.className = 'msg info';
+    box.innerHTML = escapeHtml(text);
+    var list = document.createElement('div');
+    list.className = 'alt-list';
+    options.forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = opt.label;
+      b.addEventListener('click', opt.onPick);
+      list.appendChild(b);
+    });
+    box.appendChild(list);
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function showError(text) {
+    var box = $('formMsg');
+    box.className = 'msg error';
+    box.textContent = text;
+  }
+
+  function hideMsg() {
+    var box = $('formMsg');
+    box.className = 'msg';
+    box.innerHTML = '';
+  }
+
+  function setBusy(b) {
+    $('submitBtn').disabled = b;
+    $('submitSpinner').style.display = b ? 'block' : 'none';
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // Month navigation
+  $('prevMonth').addEventListener('click', function () {
+    view.m--; if (view.m < 1) { view.m = 12; view.y--; }
+    loadMonth();
+  });
+  $('nextMonth').addEventListener('click', function () {
+    view.m++; if (view.m > 12) { view.m = 1; view.y++; }
+    loadMonth();
+  });
+
+  loadMonth();
+})();
+</script>
 </body>
 </html>
