@@ -14,7 +14,9 @@ Always use n8n MCP tools to look up node schemas and validate workflows before d
 ## Existing Resources (use these — do NOT recreate)
 
 - **Google Drive folder "JessieDentalCare"**: https://drive.google.com/drive/folders/1kFOD9-xQc2RgCK_sUjRn8BNupcOVWfdv
-  - Ledger columns: `booking_id | timestamp | channel | name | contact | service | date | time | calendar_event_id | status`
+  - Ledger columns (ACTUAL sheet headers — user renamed contact→email and moved mobile to F): `booking_id | timestamp | channel | name | email | mobile | service | date | time | calendar_event_id | status`. Engine writes `email` (email-only, blank if none) and `mobile`; `timestamp` is human-readable Manila time (`MMM d, yyyy h:mm a`, e.g. "Jul 12, 2026 10:03 PM"), not ISO. NOTE: the sheet layout is user-editable — verify headers before changing ledger mappings.
+- **Clinic contact details** (shown in all confirmations — Messenger message, web success screen, Gmail email): 📍 Ciudad de strike, 1 Molino Rd, Bacoor, 4102 Cavite · 📞 0917 134 7458 · ✉️ jessiemarkpongaron@gmail.com · FB https://www.facebook.com/jessiedentalcare
+- **Engine inputs** now include optional `mobile` (recorded in ledger + calendar event description). Web POST accepts `email` + `mobile` (mobile required, email optional; legacy single `contact` still accepted). Messenger flow steps: service → date → time → name → email (skippable) → mobile → confirm → done
 - **Existing n8n credential**: `Gmail OAuth2 API - JessieDentalCare` (reference by name in Gmail nodes)
 - **Google Calendar credential**: `Google Calendar OAuth2 - JessieDentalCare` (id: `JyhCdC7NHQFoSXnZ`, type: `googleCalendarOAuth2Api`)
 - **Clinic Google Calendar ID**: `1d2753be1d85374806f98dd5edf65900092e87e60d14a78237377baa3b49ec06@group.calendar.google.com` — use this calendar for all availability checks and event creation
@@ -25,6 +27,8 @@ Always use n8n MCP tools to look up node schemas and validate workflows before d
   - POST https://n8n.jessiepongaron.cloud/webhook/dental-booking (body: name, contact, service, date, time; 400 on invalid; Gmail confirmation sent when contact is an email)
   - GET https://n8n.jessiepongaron.cloud/webhook/available-slots?date=YYYY-MM-DD
   - GET https://n8n.jessiepongaron.cloud/webhook/month-availability?month=YYYY-MM
+- **Deployed workflow**: `[DBA] Messenger Booking` (id: `BCJTdnHsSQSfdEpV`, ACTIVE) — Meta callback URL: https://n8n.jessiepongaron.cloud/webhook/messenger (GET handshake echoes hub.challenge on verify-token match, 403 otherwise). Quick-reply state machine (service → date → time → name → contact → confirm → done), state in `messenger_booking` tab; slot math via engine mode=slots, booking via mode=book; replies via Messenger Send API (HTTP Request + credential `Facebook Page Token - JessieDentalCare`, id `Xw1oMQaHxXiJLLT2`, type httpQueryAuth injecting `access_token`)
+- **FB_VERIFY_TOKEN**: env var in the n8n container (set in /root/docker-compose.yml + /root/.env on the VPS — this dev machine IS the VPS); requires `N8N_BLOCK_ENV_ACCESS_IN_NODE=false` (already set)
 - **Meta App**: JessieDentalCare (Development Mode — only app admins/testers get replies until App Review passes)
 - **Facebook Page**: https://www.facebook.com/jessiedentalcare (Messenger: m.me/jessiedentalcare)
 - **Page Access Token and Webhook Verify Token**: ask the user when needed; store as n8n credentials/env vars — **never hardcode in workflow JSON**
