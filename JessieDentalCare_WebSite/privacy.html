@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy | JessieDentalCare — Bacoor, Cavite</title>
+<meta name="description" content="Privacy Policy of JessieDentalCare (Bacoor, Cavite). How we collect, use, and protect your personal data when you book an appointment online or through Facebook Messenger, in accordance with the Philippine Data Privacy Act of 2012 (RA 10173).">
+<link rel="icon" type="image/png" href="assets/logo-128.png">
+<style>
+  :root {
+    --teal: #1a7f9e;
+    --teal-dark: #0f5f78;
+    --teal-ink: #0d4557;
+    --aqua: #4fc3d9;
+    --ice: #eaf6fa;
+    --ice-2: #d9eef5;
+    --ink: #17333d;
+    --muted: #5b7682;
+    --white: #ffffff;
+    --line: #d3e6ed;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+  body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background: var(--white);
+    line-height: 1.6;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: var(--teal); }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 20px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .brand img { width: 46px; height: 46px; border-radius: 10px; }
+  .brand .b-name { font-weight: 800; color: var(--teal-dark); font-size: 1.05rem; line-height: 1.15; }
+  .brand .b-tag { font-size: .68rem; color: var(--muted); letter-spacing: .04em; }
+  .nav-links { margin-left: auto; display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    text-decoration: none; color: var(--ink); font-size: .92rem; font-weight: 600;
+    padding: 8px 12px; border-radius: 8px;
+  }
+  .nav-links a:hover { background: var(--ice); color: var(--teal-dark); }
+  .btn {
+    display: inline-block; text-decoration: none; text-align: center;
+    background: var(--teal); color: var(--white) !important;
+    font-weight: 700; border-radius: 10px; padding: 10px 18px; border: none; cursor: pointer;
+  }
+  .btn:hover { background: var(--teal-dark); }
+  #navToggle { display: none; }
+  .burger { display: none; margin-left: auto; cursor: pointer; padding: 8px; }
+  .burger span { display: block; width: 24px; height: 3px; background: var(--teal-dark); margin: 5px 0; border-radius: 2px; }
+
+  @media (max-width: 820px) {
+    .burger { display: block; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--white); border-bottom: 1px solid var(--line); padding: 8px 16px 16px;
+    }
+    .nav-links a { padding: 12px; }
+    .nav-links .btn { margin-top: 8px; }
+    #navToggle:checked ~ .nav-links { display: flex; }
+  }
+
+  /* ---------- Page ---------- */
+  .page-head {
+    background: linear-gradient(180deg, var(--ice) 0%, var(--white) 100%);
+    text-align: center; padding: 48px 20px 36px;
+  }
+  .page-head .kicker { color: var(--aqua); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: .78rem; }
+  .page-head h1 { color: var(--teal-ink); font-size: clamp(1.5rem, 3.4vw, 2.2rem); margin-top: 6px; }
+  .page-head p { color: var(--muted); margin-top: 10px; font-size: .95rem; }
+
+  .policy { max-width: 820px; margin: 0 auto; padding: 12px 20px 64px; }
+  .policy h2 {
+    color: var(--teal-ink); font-size: 1.18rem; margin: 34px 0 10px;
+    padding-bottom: 6px; border-bottom: 2px solid var(--ice-2);
+  }
+  .policy h2:first-of-type { margin-top: 18px; }
+  .policy p { margin: 10px 0; }
+  .policy ul { margin: 10px 0 10px 22px; }
+  .policy li { margin: 6px 0; }
+  .policy .note {
+    background: var(--ice); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 18px; margin: 16px 0; font-size: .93rem;
+  }
+  .policy table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .93rem; }
+  .policy th, .policy td { text-align: left; padding: 9px 12px; border: 1px solid var(--line); vertical-align: top; }
+  .policy th { background: var(--ice); color: var(--teal-ink); }
+  .tbl-scroll { overflow-x: auto; }
+
+  /* Footer */
+  footer { background: var(--teal-ink); color: #bfe0ea; padding: 34px 20px; margin-top: 30px; }
+  .foot { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; font-size: .85rem; }
+  .foot .f-brand { display: flex; align-items: center; gap: 10px; color: var(--white); font-weight: 700; }
+  .foot .f-brand img { width: 38px; height: 38px; border-radius: 9px; }
+  .foot a { color: #9fdcec; text-decoration: none; }
+  .foot a:hover { text-decoration: underline; }
+  .foot .privacy { flex-basis: 100%; font-size: .76rem; opacity: .75; }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img src="assets/logo-128.png" alt="JessieDentalCare logo">
+      <span>
+        <span class="b-name">Jessie Dental Care</span><br>
+        <span class="b-tag">HEALTHY SMILES, ALWAYS</span>
+      </span>
+    </a>
+    <label class="burger" for="navToggle" aria-label="Menu"><span></span><span></span><span></span></label>
+    <input type="checkbox" id="navToggle">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#about">About Us</a>
+      <a href="index.html#contact">Contact</a>
+      <a class="btn" href="booking.html">Book an Appointment</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HEADER ============ -->
+<header class="page-head">
+  <span class="kicker">Your Data, Protected</span>
+  <h1>Privacy Policy</h1>
+  <p>Effective date: July 15, 2026 · Last updated: July 15, 2026</p>
+</header>
+
+<!-- ============ POLICY ============ -->
+<main class="policy">
+
+  <p><strong>Jessie Dental Care</strong> ("we", "us", "our") operates a dental clinic at Ciudad de strike, 1 Molino Rd, Bacoor, 4102 Cavite, Philippines. This Privacy Policy explains what personal data we collect when you book an appointment through our website or our Facebook Messenger booking assistant, why we collect it, how we protect it, and the rights you have under the <strong>Philippine Data Privacy Act of 2012 (Republic Act No. 10173)</strong>.</p>
+
+  <div class="note">In short: we only collect what we need to schedule your dental appointment — your name, contact details, chosen service, and preferred date and time. We never sell your data, and we never use it for advertising.</div>
+
+  <h2>1. What we collect</h2>
+  <p>When you book an appointment — on this website or by chatting with our Facebook Messenger assistant — we collect only:</p>
+  <ul>
+    <li><strong>Full name</strong> — so we know who the appointment is for.</li>
+    <li><strong>Mobile number</strong> — so the clinic can reach you about your appointment.</li>
+    <li><strong>Email address</strong> (optional) — to send your booking confirmation. If you skip it, you still get your confirmation on screen or in chat.</li>
+    <li><strong>Service, date, and time</strong> — the appointment details themselves.</li>
+  </ul>
+  <p>If you book through Facebook Messenger, we also temporarily process your <strong>Messenger user ID</strong> and your answers during the chat, solely to carry the conversation from one step to the next. We do not access your Facebook profile, friends list, or posts.</p>
+  <p>We do not collect government IDs, payment card details, or health records through the booking system, and this website does not use advertising or tracking cookies.</p>
+
+  <h2>2. Why we collect it (purpose &amp; legal basis)</h2>
+  <p>We process your data only to:</p>
+  <ul>
+    <li>schedule, confirm, and manage your dental appointment;</li>
+    <li>send you a booking confirmation (by email, if you provided one);</li>
+    <li>contact you if your appointment needs to be changed or confirmed;</li>
+    <li>keep a simple record of bookings for clinic operations.</li>
+  </ul>
+  <p>The legal basis is your <strong>consent</strong>, which you give when you submit the booking form or tap "Confirm" in Messenger, and the necessity of processing to provide the service you requested (scheduling your visit).</p>
+
+  <h2>3. Where your data is stored</h2>
+  <div class="tbl-scroll">
+    <table>
+      <tr><th>Data</th><th>Where it lives</th><th>Why</th></tr>
+      <tr><td>Appointment (name, contact, service, date, time)</td><td>Our clinic calendar and booking record (Google Workspace: Google Calendar &amp; Google Sheets)</td><td>Scheduling and clinic records</td></tr>
+      <tr><td>Email confirmation</td><td>Sent via Gmail to the address you provided</td><td>Your copy of the booking</td></tr>
+      <tr><td>Messenger chat steps</td><td>Facebook Messenger (Meta) and our booking system while your booking is in progress</td><td>Guiding the chat conversation</td></tr>
+    </table>
+  </div>
+  <p>Our booking system runs on our own secured server. Access to the calendar and booking records is limited to the clinic. Google (Google LLC) and Meta (Meta Platforms, Inc.) act as service providers with their own security safeguards and privacy policies.</p>
+
+  <h2>4. Sharing</h2>
+  <p>We <strong>never sell, rent, or trade</strong> your personal data, and we do not share it with anyone outside the clinic and the service providers named above, unless required by law.</p>
+
+  <h2>5. How long we keep it</h2>
+  <p>Appointment records are kept only as long as needed for clinic operations and any record-keeping required of a dental practice, after which they are deleted. Messenger conversation state is kept only to complete your booking and may be cleared afterward. You may request earlier deletion at any time (see Section 7).</p>
+
+  <h2>6. How we protect it</h2>
+  <ul>
+    <li>All booking traffic uses encrypted connections (HTTPS).</li>
+    <li>Booking records are stored in access-controlled accounts; only the clinic has access.</li>
+    <li>We collect the minimum data needed — nothing more.</li>
+  </ul>
+
+  <h2>7. Your rights under RA 10173</h2>
+  <p>As a data subject under the Data Privacy Act of 2012, you have the right to:</p>
+  <ul>
+    <li><strong>be informed</strong> about how your data is processed (this policy);</li>
+    <li><strong>access</strong> the personal data we hold about you;</li>
+    <li><strong>correct</strong> any inaccurate or outdated information;</li>
+    <li><strong>object</strong> to processing, or <strong>withdraw consent</strong>;</li>
+    <li><strong>request deletion or blocking</strong> of your data;</li>
+    <li><strong>data portability</strong> and to <strong>be indemnified</strong> for damages from misuse;</li>
+    <li><strong>file a complaint</strong> with the National Privacy Commission (NPC) — <a href="https://privacy.gov.ph" target="_blank" rel="noopener">privacy.gov.ph</a>.</li>
+  </ul>
+  <p>To exercise any of these rights — including cancelling an appointment and having your details removed — just contact us:</p>
+  <div class="note">
+    <strong>Jessie Dental Care</strong><br>
+    📍 Ciudad de strike, 1 Molino Rd, Bacoor, 4102 Cavite<br>
+    📞 <a href="tel:+639171347458">0917 134 7458</a><br>
+    ✉️ <a href="mailto:jessiemarkpongaron@gmail.com">jessiemarkpongaron@gmail.com</a><br>
+    💬 <a href="https://m.me/jessiedentalcare" target="_blank" rel="noopener">m.me/jessiedentalcare</a>
+  </div>
+  <p>We respond to privacy requests within a reasonable time and without charge.</p>
+
+  <h2>8. Children</h2>
+  <p>Appointments for minors should be booked by a parent or guardian, who provides the booking details on the child's behalf.</p>
+
+  <h2>9. Changes to this policy</h2>
+  <p>If we change how we handle personal data, we will update this page and the "Last updated" date above. Significant changes will be announced on our Facebook page.</p>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="foot">
+    <span class="f-brand"><img src="assets/logo-128.png" alt=""> Jessie Dental Care</span>
+    <span>
+      <a href="index.html#services">Services</a> ·
+      <a href="index.html#about">About Us</a> ·
+      <a href="index.html#contact">Contact</a> ·
+      <a href="booking.html">Book an Appointment</a> ·
+      <a href="privacy.html">Privacy Policy</a>
+    </span>
+    <span>© <span id="yr">2026</span> Jessie Dental Care · Bacoor, Cavite</span>
+    <span class="privacy">Your personal data is collected only to manage your appointment and is processed in accordance with the Philippine Data Privacy Act of 2012 (RA 10173).</span>
+  </div>
+</footer>
+
+<script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+</body>
+</html>

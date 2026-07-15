@@ -7,3 +7,6 @@
 # Local tooling
 node_modules/
 .claude/settings.local.json
+
+# Wrangler build cache
+.wrangler/

@@ -167,6 +167,8 @@ flowchart TD
     INE -- "needs slots or booking" --> CBE["Call Booking Engine<br/>(mode=slots / mode=book)"]:::engine
     INE -- "just the next question" --> CR
     CBE --> CR["Compose Reply<br/>(text + quick-reply buttons)"]:::logic
+    CBE --> ISE{"IF Send Email<br/>(booked + email given?)"}:::logic
+    ISE -- yes --> GM["Send Confirmation Email<br/>(Gmail)"]:::out
     CR --> SS["Save State<br/>(messenger_booking tab)"]:::sheets
     CR --> SMR["Send Messenger Reply<br/>(Messenger Send API)"]:::out
 
@@ -192,6 +194,7 @@ flowchart TD
 5. **IF Needs Engine** → **Call Booking Engine** — only when needed: fetching free times for a chosen day (mode=slots) or making the actual booking after "✅ Confirm" (mode=book).
 6. **Compose Reply** (Code) — builds the Messenger message: quick-reply buttons for services/dates/times, the consent + confirm summary, or the final "🎉 Booked!" message with booking ID and clinic address. Handles all four engine statuses (offers other times/days when taken/full).
 7. **Save State** — writes the updated step back to the sheet, and **Send Messenger Reply** — sends the message via the Messenger Send API (uses the `Facebook Page Token - JessieDentalCare` credential).
+8. **IF Send Email** → **Send Confirmation Email** — when the booking succeeded AND the person gave an email address, the same Gmail confirmation as the web channel is sent (booking ID, service, date/time, clinic contact details). Skipped email = chat confirmation only.
 
 **Current limitation:** the Meta app is in **Development Mode**, so only app admins/testers get replies. Going public needs `pages_messaging` App Review approval + switching the app to Live.
 
